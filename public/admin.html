@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="htmx.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>Admin</title>
+</head>
+<body  hx-get="/cars" hx-target="#data" hx-trigger="load"  hx-ext="htmx.ext.js" class="bg-gray-100">
+    <div class="max-w-3xl mx-auto p-4">
+    <form 
+    class="bg-white p-6 rounded-lg shadow"
+    hx-trigger="submit"
+    hx-post="/new"
+    hx-target="#res"
+    hx-indicator="#loading"
+    
+    >
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="border p-2 rounded" required min="0" max="10">
+
+        <label for="cost">Cost:</label>
+        <input type="number" id="cost" name="cost" class="border p-2 rounded" required min="0" max="10">
+
+        <label for="speed">Speed:</label>
+        <input type="number" id="speed" name="speed" class="border p-2 rounded" required min="0" max="10">
+       
+       <label for="comfort">Comfort:</label>
+       <input type="number" id="comfort" name="comfort" class="border p-2 rounded" required min="0" max="10">
+       
+       <label for="technology">Technology:</label>
+       <input type="number" id="technology" name="technology" class="border p-2 rounded" required min="0" max="10">
+       
+          
+       <label for="fuel">Fuel Eco:</label>
+       <input type="number" id="fuel" name="fuel" class="border p-2 rounded" required min="0" max="10">
+       
+               
+       <label for="maintenance">Maintenance Cost:</label>
+       <input type="number" id="maintenance" name="maintenance" class="border p-2 rounded" required min="0" max="10">
+       
+        <button
+        type="submit"
+        class="bg-blue-500 text-white py-2 px-3 my-5 rounded-lg"
+
+        >POST</button>
+        <div id="res">
+
+        </div>
+
+        <span class="htmx-indicator" id="loading">
+            <img src="car.gif" alt="loading..." class="m-auto h-10">
+
+        </span>
+    </form>
+
+    <div id="data" class="mt-8 bg-white p-6 rounded-lg shadow"></div>
+
+    <form class="mt-4"
+    hx-post="/delete" 
+    hx-trigger="submit"
+    hx-target="#deleteres"
+    hx-vals='{
+      "showMessage": "true"
+    }'
+    >
+
+        <div class="flex space-x-2">
+      
+          <input 
+            type="number" 
+            name="id"
+            class="border p-2 py-2 rounded" 
+            min="1"
+            placeholder="Enter ID to delete">
+          
+          <button
+            type="submit"
+            class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded"  
+          >
+            Delete
+          </button>
+      
+          <div id="deleteres"></div>
+        </div>
+        
+      </form>
+</div>
+    <script>
+        document.querySelector("form").addEventListener("htmx:afterRequest", (event) => {
+          location.reload();
+          
+        })
+
+
+
+        </script>
+</body>
+</html>

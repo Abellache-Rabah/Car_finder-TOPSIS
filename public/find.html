@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="htmx.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>TOPSIS</title>
+</head>
+<body>
+    <form 
+    hx-trigger="submit"
+    hx-get="/find"
+    hx-swap="outerHTML"
+    hx-indicator="#loading"
+    >
+        <label for="cost">Cost:</label>
+        <input type="number" id="cost" name="cost" class="border p-2 rounded" required>
+
+        <label for="speed">Speed:</label>
+        <input type="number" id="speed" name="speed" class="border p-2 rounded" required>
+        <button
+        type="submit"
+        class="bg-blue-500 text-white py-2 px-3 my-5 rounded-lg"
+
+        >POST</button>
+        <div id="res">
+
+        </div>
+
+        <span class="htmx-indicator" id="loading">
+            <img src="car.gif" alt="loading..." class="m-auto h-10">
+
+        </span>
+    </form>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="htmx.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <title>TOPSIS</title>
+</head>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="bg-white w-96 shadow-lg rounded-lg px-10 py-8">
+    <form 
+    class="space-y-4" 
+    hx-trigger="submit"
+    hx-get="/topsis"
+    hx-swap="outerHTML"
+    hx-indicator="#loading"
+    >
+        <label for="cost"  class="block font-medium">Cost wigt:</label>
+        <input type="number" id="cost" name="cost" max="10" min="0"class="w-full border px-3 py-2 rounded-lg" required>
+
+        <label for="speed" class="block font-medium">Speed wigt:</label>
+        <input type="number" id="speed" name="speed"class="w-full border px-3 py-2 rounded-lg"  min="0" max="10" required>
+        
+          
+       <label for="comfort">Comfort:</label>
+       <input type="number" id="comfort" name="comfort" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
+       
+       <label for="technology">Technology:</label>
+       <input type="number" id="technology" name="technology" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
+       
+          
+       <label for="fuel">Fuel Eco:</label>
+       <input type="number" id="fuel" name="fuel" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
+       
+               
+       <label for="maintenance">Maintenance Cost:</label>
+       <input type="number" id="maintenance" name="maintenance" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
+       
+        
+        <button
+        type="submit"
+        class="bg-indigo-500 text-white px-3 py-2 rounded-lg"
+
+        >POST</button>
+        <div id="res"  class="mt-4 text-lg">
+
+        </div>
+
+        <span class="htmx-indicator" id="loading">
+            <img src="car.gif" alt="loading..." class="m-auto h-10">
+        </span>
+    </form>
+</div>
+</body>
+</html>
