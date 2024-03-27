@@ -2,7 +2,7 @@ const express = require("express");
 const mysql = require("mysql2/promise");
 
 const app = express();
-const port = 3000; // Adjust as needed
+const port = process.env.PORT || 3000; // Adjust as needed
 
 // Connect to MySQL database
 const pool = mysql.createPool({
