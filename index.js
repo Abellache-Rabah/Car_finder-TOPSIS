@@ -6,11 +6,11 @@ const port = 3000; // Adjust as needed
 
 // Connect to MySQL database
 const pool = mysql.createPool({
-  host: "localhost",
-  user: "rabah",
-  password: "rabah",
-  database: "car",
-  port: 4306,
+  host: "k6a.h.filess.io", // "localhost",
+  user: "tp_ownersoman", // "rabah",
+  password: "4611e5c3fd0281f1df89665652d237c213a061a9", // "rabah",
+  database: "tp_ownersoman", // "car",
+  port: "3306", // 4306,
 });
 
 app.use(express.static("public"));
@@ -81,13 +81,7 @@ app.post("/delete", async (req, res) => {
   if (id) {
     const s = await pool.query("DELETE FROM cars WHERE id=?;", [id]);
 
-    const { affectedRows } = s;
-    console.log(affectedRows);
-    if (affectedRows > 0) {
-      res.send('<p id="deleteres">successfully</p>');
-    } else {
-      res.send('<p id="deleteres">Cant Delete</p>');
-    }
+    res.send('<p id="deleteres">successfully</p>');
   } else {
     console.error(error);
     res.status(500).json({ message: "Error creating model" });
@@ -349,22 +343,16 @@ app.get("/topsis", async (req, res) => {
     );
 
     console.log("-------------------Winner---------------------");
-
     console.log(maxC);
 
-    const [Sugg] = await pool.query("SELECT * FROM models WHERE id=? ", [
-      maxC.id,
-    ]);
-    const Sug = Sugg[0];
-
-    if (Sug) {
-      res.send(`<h1 class="text-2xl font-bold text-gray-500">We found a car for you :  <span class="text-green-800">${Sug.name}</span> with speed of  <span class="text-green-800">${Sug.speed}</span> and cost of  <span class="text-green-800">${Sug.cost}</span></h1>
+    res.send(`<h1 class="text-2xl font-bold text-gray-500">We found a car for you :  <span class="text-green-500">${
+      maxC.name
+    }</span>  With probability of ${maxC.c.toFixed(2)}</h1>
      <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 mt-4">Retry</a> `);
-    } else {
-      res.send(`<p  class="text-red-500 font-bold"> Sorry cant find a car for you </p>
-      <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 mt-4">Retry</a>
-      `);
-    }
+
+    //   res.send(`<p  class="text-red-500 font-bold"> Sorry cant find a car for you </p>
+    //  <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 mt-4">Retry</a>
+    // `);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Error creating model" });

@@ -14,6 +14,7 @@
     hx-trigger="load"
     hx-ext="htmx.ext.js"
     class="bg-gray-100"
+    hx-indicator="#loading"
   >
     <div class="max-w-3xl mx-auto p-4">
       <form
@@ -161,6 +162,9 @@
         <div id="res"></div>
       </form>
 
+      <span class="htmx-indicator" id="loading">
+        <img src="car.gif" alt="loading..." class="m-auto h-10" />
+      </span>
       <div id="data" class="mt-8 bg-white p-6 rounded-lg shadow"></div>
 
       <form
