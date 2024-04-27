@@ -202,6 +202,12 @@
         .addEventListener("htmx:afterRequest", (event) => {
           location.reload();
         });
+
+      let password = prompt("Please enter your password:");
+
+      if (password !== "Admin") {
+        window.location.href = "index.html";
+      }
     </script>
   </body>
 </html>
