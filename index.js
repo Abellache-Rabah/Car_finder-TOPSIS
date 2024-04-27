@@ -93,7 +93,8 @@ function dev(value, total) {
 }
 
 app.get("/topsis", async (req, res) => {
-  const { cost, speed, comfort, technology, fuel, maintenance } = req.query;
+  const { cost, speed, comfort, technology, fuel, maintenance, numCars } =
+    req.query;
   try {
     const [rows] = await pool.query(
       "SELECT id,name,cost,speed,`fuel`, `comfort`, `technology`, `maintenance` FROM cars"
@@ -335,6 +336,10 @@ app.get("/topsis", async (req, res) => {
     console.log("-------------------C----------------------");
     console.log(C);
 
+    Sorted_C = C.sort((a, b) => b.c - a.c);
+    console.log("-------------------Sorted ---------------------");
+    console.log(Sorted_C);
+
     const maxC = C.reduce(
       (max, row) => {
         return row.c > max.c ? row : max;
@@ -345,10 +350,44 @@ app.get("/topsis", async (req, res) => {
     console.log("-------------------Winner---------------------");
     console.log(maxC);
 
-    res.send(`<h1 class="text-2xl font-bold text-gray-500">We found a car for you :  <span class="text-green-500">${
-      maxC.name
-    }</span>  With probability of ${maxC.c.toFixed(2)}</h1>
-     <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 mt-4">Retry</a> `);
+    let topCars = Sorted_C.slice(0, numCars);
+
+    let tableRows = topCars
+      .map(
+        (car) => `
+  <tr class="bg-gray-100 border-b border-gray-200">
+    <td class="px-4 py-3">${car.name}</td>
+    <td class="px-4 py-3">${car.c.toFixed(2)}</td>
+  </tr>
+`
+      )
+      .join("");
+
+    let response = `
+  <h1 class="text-2xl font-bold text-gray-500">We found a car for you :  <span class="text-green-500">${
+    maxC.name
+  }</span>  With probability of ${maxC.c.toFixed(2)}</h1>
+  <p>Other Cars</p>
+  <table class="w-full mt-3 border-collapse">
+    <thead>
+      <tr class="text-left bg-gray-300">
+        <th class="px-4 py-2">Car</th>
+        <th class="px-4 py-2">Probability</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${tableRows}
+    </tbody>
+  </table>
+  <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 w-full rounded-lg hover:bg-indigo-600 mt-4">Retry</a>
+`;
+
+    res.send(response);
+
+    // res.send(`<h1 class="text-2xl font-bold text-gray-500">We found a car for you :  <span class="text-green-500">${
+    //   maxC.name
+    // }</span>  With probability of ${maxC.c.toFixed(2)}</h1>
+    //  <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 mt-4">Retry</a> `);
 
     //   res.send(`<p  class="text-red-500 font-bold"> Sorry cant find a car for you </p>
     //  <a href="/index.html" class="inline-block bg-indigo-500 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 mt-4">Retry</a>

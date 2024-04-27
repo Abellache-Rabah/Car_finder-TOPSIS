@@ -1,57 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="htmx.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
 
-    <title>TOPSIS</title>
-</head>
-<body class="bg-gray-100 h-screen flex items-center justify-center">
+    <title>TOPSIS CAR FINDER</title>
+  </head>
+  <body class="bg-gray-100 h-screen flex items-center justify-center">
     <div class="bg-white w-96 shadow-lg rounded-lg px-10 py-8">
-    <form 
-    class="space-y-4" 
-    hx-trigger="submit"
-    hx-get="/topsis"
-    hx-swap="outerHTML"
-    hx-indicator="#loading"
-    >
-        <label for="cost"  class="block font-medium">Cost wigt:</label>
-        <input type="number" id="cost" name="cost" max="10" min="0"class="w-full border px-3 py-2 rounded-lg" required>
+      <form
+        class="space-y-4"
+        hx-trigger="submit"
+        hx-get="/topsis"
+        hx-swap="outerHTML"
+        hx-indicator="#loading"
+      >
+        <label for="cost" class="block font-medium">Cost wigt:</label>
+        <input
+          type="number"
+          id="cost"
+          name="cost"
+          max="10"
+          min="0"
+          class="w-full border px-3 py-2 rounded-lg"
+          required
+        />
 
         <label for="speed" class="block font-medium">Speed wigt:</label>
-        <input type="number" id="speed" name="speed"class="w-full border px-3 py-2 rounded-lg"  min="0" max="10" required>
-        
-          
-       <label for="comfort">Comfort:</label>
-       <input type="number" id="comfort" name="comfort" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
-       
-       <label for="technology">Technology:</label>
-       <input type="number" id="technology" name="technology" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
-       
-          
-       <label for="fuel">Fuel Eco:</label>
-       <input type="number" id="fuel" name="fuel" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
-       
-               
-       <label for="maintenance">Maintenance Cost:</label>
-       <input type="number" id="maintenance" name="maintenance" class="w-full border px-3 py-2 rounded-lg" required min="0" max="10">
-       
-        
+        <input
+          type="number"
+          id="speed"
+          name="speed"
+          class="w-full border px-3 py-2 rounded-lg"
+          min="0"
+          max="10"
+          required
+        />
+
+        <label for="comfort">Comfort:</label>
+        <input
+          type="number"
+          id="comfort"
+          name="comfort"
+          class="w-full border px-3 py-2 rounded-lg"
+          required
+          min="0"
+          max="10"
+        />
+
+        <label for="technology">Technology:</label>
+        <input
+          type="number"
+          id="technology"
+          name="technology"
+          class="w-full border px-3 py-2 rounded-lg"
+          required
+          min="0"
+          max="10"
+        />
+
+        <label for="fuel">Fuel Eco:</label>
+        <input
+          type="number"
+          id="fuel"
+          name="fuel"
+          class="w-full border px-3 py-2 rounded-lg"
+          required
+          min="0"
+          max="10"
+        />
+
+        <label for="maintenance">Maintenance Cost:</label>
+        <input
+          type="number"
+          id="maintenance"
+          name="maintenance"
+          class="w-full border px-3 py-2 rounded-lg"
+          required
+          min="0"
+          max="10"
+        />
+
+        <label for="numCars">Number of Cars:</label>
+        <select
+          id="numCars"
+          name="numCars"
+          class="w-full border px-3 py-2 rounded-lg"
+          required
+        >
+          <option value="1">1</option>
+          <option value="5">5</option>
+          <option value="10">10</option>
+        </select>
+
         <button
-        type="submit"
-        class="bg-indigo-500 text-white px-3 py-2 rounded-lg"
-
-        >POST</button>
-        <div id="res"  class="mt-4 text-lg">
-
-        </div>
+          type="submit"
+          class="text-white px-3 py-2 rounded-lg w-full bg-red-500"
+          id="myButton"
+        >
+          Find Me A Car
+        </button>
+        <div id="res" class="mt-4 text-lg"></div>
 
         <span class="htmx-indicator" id="loading">
-            <img src="car.gif" alt="loading..." class="m-auto h-10">
+          <img src="car.gif" alt="loading..." class="m-auto h-10" />
         </span>
-    </form>
-</div>
-</body>
+      </form>
+    </div>
+
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
+  </body>
+  <script>
+    Toastify({
+      text: "The values are from [0 to 10] represent the importance of the criteria.",
+      duration: 3000,
+      newWindow: true,
+      close: true,
+      gravity: "top", // `top` or `bottom`
+      position: "top", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+      style: {
+        background: "linear-gradient(to right, #00b09b, #96c93d)",
+      },
+    }).showToast();
+
+    let textFields = document.querySelectorAll('input[type="number"]');
+
+    document
+      .getElementById("myButton")
+      .addEventListener("click", function (event) {
+        let allFilled = Array.from(textFields).every(
+          (input) => input.value.trim() !== ""
+        );
+
+        if (allFilled) {
+          Toastify({
+            text: "Please wait !",
+            duration: 1000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+              background: "linear-gradient(to right, #00b09b, #96c93d)",
+            },
+          }).showToast();
+        } else {
+          event.preventDefault(); // Prevent form submission
+          Toastify({
+            text: "Please fill All Fields! with values from [0 to 10]",
+            duration: 3000,
+            newWindow: true,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+          }).showToast();
+        }
+      });
+  </script>
 </html>
