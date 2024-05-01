@@ -24,40 +24,43 @@
       >
         <label for="cost" class="block font-medium">Cost wigt:</label>
         <input
-          type="number"
+          type="range"
           id="cost"
           name="cost"
           max="10"
           min="0"
           class="w-full border px-3 py-2 rounded-lg"
           required
+          oninput="costOutput.value = cost.value"
         />
 
         <label for="speed" class="block font-medium">Speed wigt:</label>
         <input
-          type="number"
+          type="range"
           id="speed"
           name="speed"
           class="w-full border px-3 py-2 rounded-lg"
           min="0"
           max="10"
           required
+          oninput="speedOutput.value = speed.value"
         />
 
         <label for="comfort">Comfort:</label>
         <input
-          type="number"
+          type="range"
           id="comfort"
           name="comfort"
           class="w-full border px-3 py-2 rounded-lg"
           required
           min="0"
           max="10"
+          oninput="comfortOutput.value = comfort.value"
         />
 
         <label for="technology">Technology:</label>
         <input
-          type="number"
+          type="range"
           id="technology"
           name="technology"
           class="w-full border px-3 py-2 rounded-lg"
@@ -68,7 +71,7 @@
 
         <label for="fuel">Fuel Eco:</label>
         <input
-          type="number"
+          type="range"
           id="fuel"
           name="fuel"
           class="w-full border px-3 py-2 rounded-lg"
@@ -79,10 +82,10 @@
 
         <label for="maintenance">Maintenance Cost:</label>
         <input
-          type="number"
+          type="range"
           id="maintenance"
           name="maintenance"
-          class="w-full border px-3 py-2 rounded-lg"
+          class="w-full block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           required
           min="0"
           max="10"

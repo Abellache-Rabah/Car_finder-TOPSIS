@@ -349,6 +349,20 @@ app.get("/topsis", async (req, res) => {
 
     console.log("-------------------Winner---------------------");
     console.log(maxC);
+    const encodedCarName = maxC.name.replace(/ /g, "+");
+
+    let url = null;
+    await getUpdatedImageUrl(encodedCarName)
+      .then((updatedImageUrl) => {
+        if (updatedImageUrl) {
+          url = updatedImageUrl;
+        }
+      })
+      .catch((error) => {
+        url = null;
+      });
+
+    console.log(url);
 
     let topCars = Sorted_C.slice(0, numCars);
 
@@ -364,9 +378,9 @@ app.get("/topsis", async (req, res) => {
       .join("");
 
     let response = `
-  <h1 class="text-2xl font-bold text-gray-500">We found a car for you :  <span class="text-green-500">${
-    maxC.name
-  }</span>  With probability of ${maxC.c.toFixed(2)}</h1>
+  <h1 class="text-2xl font-bold text-gray-500">We found a car for you : <a href=" ${url}">  <span class="text-green-500" > ${
+      maxC.name
+    }</span> </a> With probability of ${maxC.c.toFixed(2)}</h1>
   <p>Other Cars</p>
   <table class="w-full mt-3 border-collapse">
     <thead>
@@ -397,6 +411,29 @@ app.get("/topsis", async (req, res) => {
     res.status(500).json({ message: "Error creating model" });
   }
 });
+
+//#endregion
+
+async function getUpdatedImageUrl(encodedCarName) {
+  try {
+    const response = await fetch(
+      `https://www.flickr.com/services/feeds/photos_public.gne?tags=${encodedCarName}&format=json&nojsoncallback=1`
+    );
+    const data = await response.json();
+
+    if (data.items.length > 0) {
+      const firstImageUrl = data.items[0].media.m;
+      const updatedImageUrl = firstImageUrl.replace(/_m\.jpg$/, ".jpg");
+      return updatedImageUrl;
+    } else {
+      console.log("No images found.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+}
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
